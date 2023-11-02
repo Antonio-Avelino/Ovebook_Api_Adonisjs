@@ -29,7 +29,7 @@ export default class BasesController {
                     })
             }
 
-       async notFound({response,mensagem} ){
+       async notFound({response,mensagem} ){ 
 
             return response.status(404).json({
                 mensagem:mensagem || 'dados não encontrado',
