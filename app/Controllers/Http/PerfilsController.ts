@@ -34,7 +34,7 @@ export default class PerfilsController extends BasesController {
   public async update({ request, response, params,auth}: HttpContextContract) {
     const idPrams = params.id;
   let  autentication= await auth.use('api').authenticate()
-    const body = request.only(["nome"]);
+  const body = request.only(["nome",'email','password','localizacao','descricao']);
     let data = await Perfil.find(autentication.id);
 
     if (!data) {
