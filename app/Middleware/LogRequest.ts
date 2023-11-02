@@ -11,7 +11,6 @@ export default class LogRequest {
 
 
     
-    console.log("meu dados",autenticaco.nome)
     // if (notAuthenticated) {
     //   response.unauthorized({ error: 'Must be logged in' })
     //   return
