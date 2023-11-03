@@ -17,7 +17,7 @@ Route.group(()=>{
   Route.resource('/livros','LivrosController').apiOnly()
 })
 
-.middleware('login')
+// .middleware('login')
 .prefix('/api')
 // .middleware('auth')
 
