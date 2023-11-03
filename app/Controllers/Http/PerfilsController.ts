@@ -58,4 +58,12 @@ export default class PerfilsController extends BasesController {
       return this.unknownError({ response, mensagem: null });
     }
   }
+
+
+
+  public async mostarPerfil(){
+
+    return['ola munod como vai']
+  }
+
 }

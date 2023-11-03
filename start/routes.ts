@@ -1,5 +1,4 @@
 import Route from '@ioc:Adonis/Core/Route'
-import { async } from 'rxjs'
 
 
 
@@ -12,10 +11,13 @@ Route.group(()=>{
   // })
   // .middleware('login')
 
-  Route.resource('/perfil','PerfilsController') 
-  .apiOnly()
+  Route.resource('/perfil','PerfilsController') .apiOnly()
+  Route.get('/perfil/mostarPerfil','PerfilsController.mostarPerfil')
   
-}).middleware('login')
+  Route.resource('/livros','LivrosController').apiOnly()
+})
+
+.middleware('login')
 .prefix('/api')
 // .middleware('auth')
 
