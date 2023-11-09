@@ -16,6 +16,7 @@ Route.group(()=>{
   Route.resource('/livros','LivrosController').apiOnly()
   Route.post('/livros/:id/adicionar-sumario','LivrosController.inserirSumario')
   Route.post('/livros/:id/avaliar-livro','LivrosController.avaliar')
+  Route.post('/livros/:id/comentar','LivrosController.comentar')
 
   
 })
