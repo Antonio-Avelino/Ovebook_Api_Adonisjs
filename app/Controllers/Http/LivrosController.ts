@@ -3,11 +3,12 @@ import Livro from "App/Models/Livro";
 import Perfil from "App/Models/Perfil";
 import Sumario from "App/Models/Sumario";
 import BasesController from "./BasesController";
-import { Query } from "mysql2/typings/mysql/lib/protocol/sequences/Query";
+import Avaliacao from "App/Models/Avaliacao";
 export default class LivrosController extends BasesController {
   public async index({ request, response }: HttpContextContract) {
-    let dataLivro = await Livro.query()
-    .preload("sumarios");
+    let dataLivro = await Livro.query().preload("perfil").preload("sumarios")
+    .preload('avaliacao')
+
     return this.suceco({ data: dataLivro, response });
   }
 
@@ -27,11 +28,14 @@ export default class LivrosController extends BasesController {
   }
 
   public async show({ request, response, params }: HttpContextContract) {
-    //  let livro = await Livro.find(params.id)
     let livro = await Livro.query()
       .where("is_deleted", false)
       .where("id", params.id)
       .preload("perfil")
+      .preload("sumarios")
+       .preload('avaliacao',(query)=>{
+        query.preload('perfil')
+       }) 
       .first();
 
     if (!livro)
@@ -53,7 +57,23 @@ export default class LivrosController extends BasesController {
 
     if (!livro)
       return this.notFound({ response, mensagem: "o livro não existe" });
+    body.livro_id = livro.id;
+
     let data = await Sumario.create(body);
     return this.write({ response, data, mensagem: null });
   }
+
+  public async avaliar({ request, response, params ,auth}: HttpContextContract) {
+    let body = request.all();
+    let perfil = await auth.use('api').authenticate()
+    let livro = await Livro.find(params.id)
+  
+    if(!livro)  return this.notFound({ response, mensagem: "o livro não existe" });
+    body.perfil_id=perfil.id 
+    body.livro_id=livro?.id  
+    let inserir = await Avaliacao.create(body);
+    return this.write({ response, data: inserir, mensagem: null });
+  }
+
+  
 }
