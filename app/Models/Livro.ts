@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, HasMany, belongsTo, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Perfil from './Perfil'
+import Sumario from './Sumario'
 export default class Livro extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -18,13 +19,9 @@ export default class Livro extends BaseModel {
   public perfilId:number
   @belongsTo(() => Perfil)
   public perfil: BelongsTo<typeof Perfil>
-
-
-  // @column()
-  // public obraId: number
-
-  // @belongsTo(() => Obra)
-  // public obra: BelongsTo<typeof Obra>
+  @hasMany(() => Sumario)
+  public sumarios: HasMany<typeof Sumario>;
+  
 
   @column()
   public isDeleted: boolean

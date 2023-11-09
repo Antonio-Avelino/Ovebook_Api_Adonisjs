@@ -3,20 +3,11 @@ import Livro from "App/Models/Livro";
 import Perfil from "App/Models/Perfil";
 import Sumario from "App/Models/Sumario";
 import BasesController from "./BasesController";
+import { Query } from "mysql2/typings/mysql/lib/protocol/sequences/Query";
 export default class LivrosController extends BasesController {
   public async index({ request, response }: HttpContextContract) {
-    // let dataPerfil = await Livro.all();
-    // let dataPerfil = await Livro.query()
-    //   .where("is_deleted", false)
-    //   .preload("perfil");
-
-    let dataLivro = await Sumario.query()
-    // .where('is_delete',false)
-    .preload("livro")
-    // .preload('livro',(perfil)=>{
-    //   perfil.preload('perfil')
-    // })
-
+    let dataLivro = await Livro.query()
+    .preload("sumarios");
     return this.suceco({ data: dataLivro, response });
   }
 
@@ -59,10 +50,10 @@ export default class LivrosController extends BasesController {
   }: HttpContextContract) {
     let body = request.all();
     let livro = await Livro.find(params.id);
-    body.id_livro= livro?.id
 
-    if (!livro)      return this.notFound({ response, mensagem: "o livro não existe" });
+    if (!livro)
+      return this.notFound({ response, mensagem: "o livro não existe" });
     let data = await Sumario.create(body);
-     return this.write({ response, data, mensagem: null });
+    return this.write({ response, data, mensagem: null });
   }
 }
