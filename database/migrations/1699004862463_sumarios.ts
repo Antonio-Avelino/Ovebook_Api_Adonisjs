@@ -9,9 +9,8 @@ export default class extends BaseSchema {
 
       table.string('sub_titlo')
       table.string('descricao')
-      table.integer('id_livro').unsigned().references('livros.id')
-
-      // table.integer('perfil_id').unsigned().references('perfils.id')
+      table.integer('livro_id').unsigned().references('livros.id')
+      
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
