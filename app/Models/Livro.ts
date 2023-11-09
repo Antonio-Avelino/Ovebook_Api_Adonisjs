@@ -3,6 +3,7 @@ import { BaseModel, BelongsTo, HasMany, belongsTo, column, hasMany } from '@ioc:
 import Perfil from './Perfil'
 import Sumario from './Sumario'
 import Avaliacao from './Avaliacao'
+import Comentario from './Comentario'
 export default class Livro extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -26,7 +27,10 @@ export default class Livro extends BaseModel {
   @hasMany(() => Avaliacao)
   public avaliacao: HasMany<typeof Avaliacao>;
   
-
+  @hasMany(() => Comentario)
+  public comentario: HasMany<typeof Comentario>;
+  
+  
   @column()
   public isDeleted: boolean
   @column.dateTime({ autoCreate: true })
