@@ -13,9 +13,18 @@ export default class Livro extends BaseModel {
   public descricao:string
   @column()
   public bloqueado: boolean
-  @belongsTo(() => Perfil)
-  public perfilId: BelongsTo<typeof Perfil>
 
+  @column()
+  public perfilId:number
+  @belongsTo(() => Perfil)
+  public perfil: BelongsTo<typeof Perfil>
+
+
+  // @column()
+  // public obraId: number
+
+  // @belongsTo(() => Obra)
+  // public obra: BelongsTo<typeof Obra>
 
   @column()
   public isDeleted: boolean

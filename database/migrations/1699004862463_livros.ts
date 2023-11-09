@@ -10,9 +10,9 @@ export default class extends BaseSchema {
       table.string('titlo')
       table.string('capa')
       table.string('descricao')
-      table.boolean('bloqueado').defaultTo(false)
-      table.integer('perfilId').unsigned().references('perfils.id')
+      table.integer('perfil_id').unsigned().references('perfils.id')
       table.boolean('is_deleted').defaultTo(false)
+      table.boolean('bloqueado').defaultTo(false)
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
