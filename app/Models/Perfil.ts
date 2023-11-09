@@ -9,7 +9,7 @@ export default class Perfil extends BaseModel {
   public nome: string
 
 
-  @column()
+  @column({serializeAs: null})
   public password: string
   
 

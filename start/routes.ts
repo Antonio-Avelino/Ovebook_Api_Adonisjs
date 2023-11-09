@@ -15,6 +15,9 @@ Route.group(()=>{
   Route.get('/perfil/mostarPerfil','PerfilsController.mostarPerfil')
   Route.resource('/livros','LivrosController').apiOnly()
   Route.post('/livros/:id/adicionar-sumario','LivrosController.inserirSumario')
+  Route.post('/livros/:id/avaliar-livro','LivrosController.avaliar')
+
+  
 })
 
 .middleware('login')
