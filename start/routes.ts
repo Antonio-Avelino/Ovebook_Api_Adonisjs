@@ -13,8 +13,8 @@ Route.group(()=>{
 
   Route.resource('/perfil','PerfilsController') .apiOnly()
   Route.get('/perfil/mostarPerfil','PerfilsController.mostarPerfil')
-  
   Route.resource('/livros','LivrosController').apiOnly()
+  Route.post('/livros/:id/adicionar-sumario','LivrosController.inserirSumario')
 })
 
 .middleware('login')
