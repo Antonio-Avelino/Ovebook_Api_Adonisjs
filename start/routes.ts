@@ -4,21 +4,18 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(()=>{
 
-  // Route.get('/:idalidana', async ({auth}) => {
-  //   console.log("nome produto",auth.use('api').user?.nome)
-  //   console.log("id",auth.use('api').user?.id)
-  //   return { hello: 'world' }
-  // })
-  // .middleware('login')
 
-  Route.resource('/perfil','PerfilsController') .apiOnly()
   Route.get('/perfil/mostarPerfil','PerfilsController.mostarPerfil')
-  Route.resource('/livros','LivrosController').apiOnly()
   Route.post('/livros/:id/adicionar-sumario','LivrosController.inserirSumario')
   Route.post('/livros/:id/avaliar-livro','LivrosController.avaliar')
   Route.post('/livros/:id/comentar','LivrosController.comentar')
+  Route.post('/livros/adicionar-categoria','LivrosController.addcategoria')
+  Route.get('/livros/categoria','LivrosController.listarcategoria')
+  Route.get('/livros/categoria/:id','LivrosController.listarCadaCategoria')
 
   
+  Route.resource('/perfil','PerfilsController') .apiOnly()
+  Route.resource('/livros','LivrosController').apiOnly()
 })
 
 .middleware('login')
