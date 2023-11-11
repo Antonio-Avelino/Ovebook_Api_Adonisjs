@@ -5,13 +5,13 @@ import Sumario from "App/Models/Sumario";
 import BasesController from "./BasesController";
 import Avaliacao from "App/Models/Avaliacao";
 import Comentario from "App/Models/Comentario";
+import Categoria from "App/Models/Categoria";
 export default class LivrosController extends BasesController {
   public async index({ request, response }: HttpContextContract) {
     let dataLivro = await Livro.query()
-    .preload("perfil")
-    .preload("sumarios")
-    .preload('avaliacao')
-
+      .preload("perfil")
+      .preload("sumarios")
+      .preload("avaliacao");
 
     return this.suceco({ data: dataLivro, response });
   }
@@ -37,10 +37,10 @@ export default class LivrosController extends BasesController {
       .where("id", params.id)
       .preload("perfil")
       .preload("sumarios")
-       .preload('avaliacao',(query)=>{
-        query.preload('perfil')
-       }) 
-       .preload('comentario')
+      .preload("avaliacao", (query) => {
+        query.preload("perfil");
+      })
+      .preload("comentario")
       .first();
 
     if (!livro)
@@ -68,30 +68,77 @@ export default class LivrosController extends BasesController {
     return this.write({ response, data, mensagem: null });
   }
 
-  public async avaliar({ request, response, params ,auth}: HttpContextContract) {
+  public async avaliar({
+    request,
+    response,
+    params,
+    auth,
+  }: HttpContextContract) {
     let body = request.all();
-    let perfil = await auth.use('api').authenticate()
-    let livro = await Livro.find(params.id)
-  
-    if(!livro)  return this.notFound({ response, mensagem: "o livro não existe" });
-    body.perfil_id=perfil.id 
-    body.livro_id=livro?.id  
+    let perfil = await auth.use("api").authenticate();
+    let livro = await Livro.find(params.id);
+
+    if (!livro)
+      return this.notFound({ response, mensagem: "o livro não existe" });
+    body.perfil_id = perfil.id;
+    body.livro_id = livro?.id;
     let inserir = await Avaliacao.create(body);
     return this.write({ response, data: inserir, mensagem: null });
   }
 
-  public async comentar({ request, response, params ,auth}: HttpContextContract){
+  public async comentar({
+    request,
+    response,
+    params,
+    auth,
+  }: HttpContextContract) {
     let body = request.all();
-    let perfil = await auth.use('api').authenticate()
-    let livro = await Livro.find(params.id)
-  
-    if(!livro)  return this.notFound({ response, mensagem: "o livro não existe" });
-    body.perfil_id=perfil.id 
-    body.livro_id=livro?.id  
+    let perfil = await auth.use("api").authenticate();
+    let livro = await Livro.find(params.id);
+
+    if (!livro)
+      return this.notFound({ response, mensagem: "o livro não existe" });
+    body.perfil_id = perfil.id;
+    body.livro_id = livro?.id;
     let inserir = await Comentario.create(body);
     return this.write({ response, data: inserir, mensagem: null });
-  
-
   }
-  
+
+  public async addcategoria({
+    request,
+    response,
+    params,
+    auth,
+  }: HttpContextContract) {
+    let body = request.all();
+    let pegarCategoria = await Categoria.findBy("nome", body.nome);
+
+    if (pegarCategoria)
+      return this.notFound({ response, mensagem: "a categoria ja existe" });
+    let data = await Categoria.create(body);
+
+    return this.write({ response, data, mensagem: null });
+  }
+
+  public async listarcategoria({
+    request,
+    response,
+    params,
+    auth,
+  }: HttpContextContract) {
+    let body = await Categoria.all();
+    return this.suceco({ response, data: body });
+  }
+  public async listarCadaCategoria({
+    request,
+    response,
+    params,
+    auth,
+  }: HttpContextContract) {
+
+    console.log("id",params.id)
+    let categoria = await Categoria.find(params.id);
+
+    return this.suceco({ response, data: categoria });
+  }
 }
