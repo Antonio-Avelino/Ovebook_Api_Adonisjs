@@ -50,7 +50,23 @@ export default class LivrosController extends BasesController {
 
   public async update({}: HttpContextContract) {}
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({request,
+    response,
+    params,
+    auth,}: HttpContextContract) {
+
+    const livroFind =  await Livro.findOrFail(params.id)
+    let perfil = await auth.use("api").authenticate();
+   let livros = await Livro.query()
+    .where('id',params.id)
+    .where('perfil_id',perfil.nome)
+console.log("sem where",livroFind)
+console.log(" where",livros)
+    if(!livros)   return this.notFound({ response, mensagem: "não podes eliminar não estas autorizado" });
+    await livroFind.delete()
+
+    return this.suceco({ response, data: 'suce' });
+  }
 
   public async inserirSumario({
     request,
